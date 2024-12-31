@@ -1,36 +1,21 @@
-# Use an official Python runtime as the base image
-FROM python:3.12-rc-bookworm
+# Using official python runtime as base image
+# The base image provides the Python runtime and essential tools needed for Python development.
+FROM Python:3.12-rc-bookworm
 
-#VOLUME /app/data
-
-# Set the working directory in the container to /app
+# set the working directory in the container to /app
+# All subsequent commands (like file copying, installing packages) will be executed relative to this directory.
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy current drectory contents (from host system) into container at /app directory
 COPY . /app
 
-# Install the required packages
+# Install required packages
+# --no-cache-dir option prevents caching, reducing image size by not storing unnecessary files.
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Set the environment variable for Flask
+# Set environment variable for Flask
+# tells Flask which Python file contains the application instance (app) that Flask should run.
 ENV FLASK_APP=app.py
 
-# Add labels to the image
-# LABEL Formatting Option 1
-LABEL "com.example.vendor"="Big Star Collectibles"
-LABEL version="1.0"
-LABEL description="The Big Star Collectibles Website \
-using the Python base image."
-
-# LABEL Formatting Option 2
-# LABEL "com.example.vendor"="Big Star Collectibles" version="1.0" description="The Big Star Collectibles Website \
-# using the Python base image."
-
-# LABEL Formatting Option 3
-# LABEL "com.example.vendor"="Big Star Collectibles" \
-# version="1.0" \
-# description="The Big Star Collectibles Website \
-# using the Python base image."
-
-# Run the command to start the Flask application
+# Run command to start flask application
 CMD ["flask", "run", "--host=0.0.0.0"]
